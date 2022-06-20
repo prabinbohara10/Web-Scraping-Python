@@ -2,9 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-
-
-
 #yo chai just total_page access garana. But, this can be optimize
 url= "https://bg.annapurnapost.com/api/search?title=%E0%A4%AC%E0%A4%9C%E0%A5%87%E0%A4%9F&page=1"
 r = requests.get(url)
@@ -55,11 +52,7 @@ def scraping(page_count, total_article):
     soup = BeautifulSoup(htmlContent, 'html.parser')
     data= json.loads(htmlContent)
     
-    
-    
     # print(len(data['data']['items']))
-
-
     for x in data['data']['items']:
     
       original.append(x)
@@ -72,7 +65,7 @@ def scraping(page_count, total_article):
 
 #end of scraping function:
 
-
+#calling scraping function:
 scraping(page_count,total_article)
 # print("page count", page_count)
 final_json_object = json.dumps(original)
