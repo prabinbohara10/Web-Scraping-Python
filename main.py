@@ -64,7 +64,7 @@ def scraping(page_count, total_article):
     
       original.append(x)
       total_article += 1
-      print(total_article)
+      
 
     if total_article > 30: #for atleast 30 article:
       break
