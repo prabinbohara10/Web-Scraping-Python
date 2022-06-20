@@ -1,6 +1,10 @@
+from pickle import TRUE
+from matplotlib.pyplot import close
 import requests
 from bs4 import BeautifulSoup
 import json
+import os
+
 
 # #yo chai just total_page access garana. But, this can be optimize
 # url= "https://bg.annapurnapost.com/api/search?title=%E0%A4%AC%E0%A4%9C%E0%A5%87%E0%A4%9F&page=1"
@@ -24,12 +28,33 @@ total_page=1
 
 # if we can to keep track of every execution of python file then, yeslae kun page ma previous iteration stopped vako ho track garcha.
 #deriving page_count from previous requests:
-# f = open("track_page.txt", "r")
-# page_count = int(f.read())
-# # print(page_count)
-# f.close()
 
-page_count=1
+if os.path.isfile("track_page.txt") == 0:
+  #first time:
+  first_time = 1
+  page_count=1
+  total_page=1
+  f = open("track_page.txt", "w")
+  f.write(str(page_count+1))
+  f.close()
+else:
+  first_time= 0
+  f = open("track_page.txt", "r")
+  str1 = f.readline()
+  str2=f.readline()
+  page_count=int(str1)
+  total_page=int(str2)
+  f.close()
+  f = open("track_page.txt", "w")
+  f.write(str(page_count+1)+"\n"+str(total_page))
+  f.close()
+
+# print(page_count)
+
+
+
+
+
 total_article=0
 
 # https://bg.annapurnapost.com/api/search?title=%E0%A4%AC%E0%A4%9C%E0%A5%87%E0%A4%9F&page=8
@@ -56,6 +81,10 @@ def scraping(page_count, total_article,total_page):
 
     if total_page == 1:
       total_page=data['data']['totalPage']
+      f = open("track_page.txt", "a")
+      f.write("\n"+str(total_page))
+      f.close()
+      
 
     # print(len(data['data']['items']))
     for x in data['data']['items']:
@@ -67,6 +96,9 @@ def scraping(page_count, total_article,total_page):
     if total_article > 30: #for atleast 30 article:
       break
     page_count += 1
+    f = open("track_page.txt", "w")
+    f.write(str(page_count+1)+"\n"+str(total_page))
+    f.close()
 
 #end of scraping function:
 
